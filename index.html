@@ -33,14 +33,14 @@
         .card p { color: var(--text-muted); font-size: 0.95rem; }
         footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem; background-color: var(--panel-color); margin-top: 4rem; }
 
-        /* --- POPUP CONTAINER MODAL STYLES --- */
+        /* MODAL CONTAINER STYLES */
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-box { background-color: var(--panel-color); padding: 2.5rem; border-radius: 8px; max-width: 450px; width: 90%; border: 2px solid var(--accent-color); text-align: left; position: relative; }
+        .modal-box { background-color: var(--panel-color); padding: 2.5rem; border-radius: 8px; max-width: 450px; width: 90%; border: 2px solid var(--accent-color); text-align: left; }
         .modal-box h2 { margin-bottom: 0.5rem; color: var(--text-main); text-align: center; }
         .modal-box p { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem; text-align: center; }
         
-        .modal-box label { display: block; margin-bottom: 0.4rem; color: var(--text-main); font-size: 0.9rem; font-weight: 500; }
+        .modal-box label { display: block; margin-bottom: 0.4rem; color: var(--text-main); font-size: 0.9rem; }
         .modal-box input, .modal-box textarea { width: 100%; padding: 0.8rem; margin-bottom: 1.2rem; border-radius: 4px; border: 1px solid var(--text-muted); background: var(--bg-color); color: var(--text-main); outline: none; font-family: inherit; }
         .modal-box input:focus, .modal-box textarea:focus { border-color: var(--accent-color); }
         .modal-box textarea { resize: none; height: 100px; }
@@ -69,7 +69,8 @@
         <div class="grid">
             <div class="card">
                 <h3>Custom Software & Web Apps</h3>
-action="https://formspree.io" <form action="https://formspree.io" method="post" id="itconsultationform"></form>         </div>
+                <p>Building clean, responsive websites and dynamic corporate applications tailored directly to your workflow.</p>
+            </div>
             <div class="card">
                 <h3>Network Optimization</h3>
                 <p>Designing fast, secure, stable network frameworks utilizing robust modern protocols and architectures.</p>
@@ -81,14 +82,13 @@ action="https://formspree.io" <form action="https://formspree.io" method="post" 
         </div>
     </section>
 
-    <!-- --- DYNAMIC MODAL CONTACT FORM --- -->
+    <!-- FORM OVERLAY WITH NO ACTION LINK (HANDLED BY JAVASCRIPT BELOW) -->
     <div class="modal-overlay" id="formModal">
         <div class="modal-box">
             <h2>Free Tech Consultation</h2>
             <p>Provide your information below and our IT specialists will reach out via email.</p>
             
-        
-            <form action="https://formspree.io" method="POST" id="itConsultationForm">
+            <form id="itConsultationForm">
                 <label for="name">Full Name</label>
                 <input type="text" name="name" id="clientName" placeholder="e.g., John Doe" required>
                 
@@ -98,12 +98,9 @@ action="https://formspree.io" <form action="https://formspree.io" method="post" 
                 <label for="message">Describe Your Technical Challenge</label>
                 <textarea name="message" id="clientMessage" placeholder="Briefly describe your required software, network, or system issue..." required></textarea>
                 
-                <!-- Anti-spam honeypot security element -->
-                <input type="text" name="_gotcha" style="display:none">
-
                 <div class="modal-buttons">
                     <button type="button" class="btn btn-cancel" id="closeFormBtn">Cancel</button>
-                    <button type="submit" class="btn">Submit Request</button>
+                    <button type="submit" class="btn" id="submitBtnText">Submit Request</button>
                 </div>
             </form>
         </div>
@@ -113,17 +110,50 @@ action="https://formspree.io" <form action="https://formspree.io" method="post" 
         <p>&copy; 2026 Digital Dynamos. Driving innovation forward.</p>
     </footer>
 
-    <!-- INTERFACE TRANSITION INTERACTIVE SCRIPT -->
+    <!-- ALTERNATIVE JAVASCRIPT AJAX LINK CODE -->
     <script>
         const modal = document.getElementById('formModal');
         const openBtn = document.getElementById('openFormBtn');
         const closeBtn = document.getElementById('closeFormBtn');
+        const form = document.getElementById('itConsultationForm');
+        const submitBtnText = document.getElementById('submitBtnText');
 
-        // Show form layout modal interface overlay
         openBtn.addEventListener('click', () => { modal.classList.add('active'); });
-        
-        // Clear window variables and slide down panel configuration
         closeBtn.addEventListener('click', () => { modal.classList.remove('active'); });
+
+        // Intercept form submission and force it straight to Formspree using Fetch API
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Stop normal form loading behavior
+            
+            submitBtnText.innerText = "Sending...";
+            submitBtnText.disabled = true;
+
+            const data = new FormData(form);
+
+            fetch('https://formspree.io', {
+                method: 'POST',
+                body: data,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert("Thank you! Your technical request has been logged successfully into the Digital Dynamos dashboard.");
+                    form.reset();
+                    modal.classList.remove('active');
+                } else {
+                    alert("Submission error. Please ensure your form configuration matches your account settings.");
+                }
+            })
+            .catch(error => {
+                alert("Network error. Please check your connectivity connection and try again.");
+            })
+            .finally(() => {
+                submitBtnText.innerText = "Submit Request";
+                submitBtnText.disabled = false;
+            });
+        });
     </script>
 </body>
 </html>
