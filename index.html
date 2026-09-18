@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -32,17 +32,6 @@
         .card h3 { margin-bottom: 0.75rem; color: var(--text-main); }
         .card p { color: var(--text-muted); font-size: 0.95rem; }
         footer { text-align: center; padding: 2rem; color: var(--text-muted); font-size: 0.9rem; background-color: var(--panel-color); margin-top: 4rem; }
-
-        /* --- NEW MODAL POPUP STYLES --- */
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.75); display: flex; justify-content: center; align-items: center; z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease; }
-        .modal-overlay.active { opacity: 1; pointer-events: auto; }
-        .modal-box { background-color: var(--panel-color); padding: 2rem; border-radius: 8px; max-width: 400px; width: 90%; border: 1px solid var(--accent-color); text-align: center; position: relative; }
-        .modal-box h2 { margin-bottom: 1rem; color: var(--text-main); }
-        .modal-box p { color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.95rem; }
-        .modal-box input { width: 100%; padding: 0.75rem; margin-bottom: 1rem; border-radius: 4px; border: 1px solid var(--text-muted); background: var(--bg-color); color: var(--text-main); outline: none; }
-        .modal-box input:focus { border-color: var(--accent-color); }
-        .modal-buttons { display: flex; gap: 10px; justify-content: center; }
-        .btn-cancel { background: transparent; color: var(--text-main); border: 1px solid var(--text-muted); }
     </style>
 </head>
 <body>
@@ -57,8 +46,10 @@
     <section class="hero">
         <h1>Powering Business with <span>Dynamic IT Solutions</span></h1>
         <p>Expert custom development, clean network infrastructure design, and proactive systems optimization.</p>
-        <!-- Updated to trigger JavaScript -->
-        <button class="btn" id="openFormBtn">Get a Free Tech Consultation</button>
+        <!-- Simple, error-free alert prompt button -->
+        <button class="btn" onclick="alert('Thank you for reaching out to Digital Dynamos! Our technical experts will contact you directly via email shortly.')">
+            Get a Free Tech Consultation
+        </button>
     </section>
 
     <section id="services" class="services">
@@ -79,57 +70,9 @@
         </div>
     </section>
 
-    <!-- NEW INTERACTIVE POPUP FORM CONTAINER -->
-    <div class="modal-overlay" id="formModal">
-        <div class="modal-box">
-            <h2>Request Consultation</h2>
-            <p>Enter your contact details and our IT Experts will call you back shortly.</p>
-            <input type="text" id="clientName" placeholder="Your Name" required>
-            <input type="email" id="clientEmail" placeholder="Business Email Address" required>
-            <div class="modal-buttons">
-                <button class="btn btn-cancel" id="closeFormBtn">Cancel</button>
-                <button class="btn" id="submitFormBtn">OK</button>
-            </div>
-        </div>
-    </div>
-
     <footer>
         <p>&copy; 2026 Digital Dynamos. Driving innovation forward.</p>
     </footer>
-
-    <!-- INTERACTIVE JAVASCRIPT ACTION LOGIC -->
-    <script>
-        const modal = document.getElementById('formModal');
-        const openBtn = document.getElementById('openFormBtn');
-        const closeBtn = document.getElementById('closeFormBtn');
-        const submitBtn = document.getElementById('submitFormBtn');
-
-        // Open popup form when clicking button
-        openBtn.addEventListener('click', () => {
-            modal.classList.add('active');
-        });
-
-        // Close popup form when clicking cancel
-        closeBtn.addEventListener('click', () => {
-            modal.classList.remove('active');
-        });
-
-        // Action when clicking OK
-        submitBtn.addEventListener('click', () => {
-            const name = document.getElementById('clientName').value;
-            const email = document.getElementById('clientEmail').value;
-
-            if(name && email) {
-                alert(Thank you, ${name}! Your consultation request has been received. Our team will contact you at ${email}.);
-                modal.classList.remove('active');
-                // Clear fields
-                document.getElementById('clientName').value = '';
-                document.getElementById('clientEmail').value = '';
-            } else {
-                alert('Please fill out both your Name and Email address first!');
-            }
-        });
-    </script>
 
 </body>
 </html>
