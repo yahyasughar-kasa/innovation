@@ -120,11 +120,10 @@
 
         openBtn.addEventListener('click', () => { modal.classList.add('active'); });
         closeBtn.addEventListener('click', () => { modal.classList.remove('active'); });
-
+action="https://formspree.io/f/xaenneee"
         // Intercept form submission and force it straight to Formspree using Fetch API
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // Stop normal form loading behavior
-            
             submitBtnText.innerText = "Sending...";
             submitBtnText.disabled = true;
 
