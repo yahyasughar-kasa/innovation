@@ -112,7 +112,7 @@
 
     <!-- ALTERNATIVE JAVASCRIPT AJAX LINK CODE -->
     <script>
-        const modal = document.getElementById('formModal');
+            const modal = document.getElementById('formModal');
         const openBtn = document.getElementById('openFormBtn');
         const closeBtn = document.getElementById('closeFormBtn');
         const form = document.getElementById('itConsultationForm');
@@ -120,15 +120,17 @@
 
         openBtn.addEventListener('click', () => { modal.classList.add('active'); });
         closeBtn.addEventListener('click', () => { modal.classList.remove('active'); });
-action="https://formspree.io/f/xaenneee"
+
         // Intercept form submission and force it straight to Formspree using Fetch API
         form.addEventListener('submit', function(event) {
             event.preventDefault(); // Stop normal form loading behavior
+            
             submitBtnText.innerText = "Sending...";
             submitBtnText.disabled = true;
 
             const data = new FormData(form);
 
+            // Using your unique ID: xaenneee
             fetch('https://formspree.io', {
                 method: 'POST',
                 body: data,
@@ -154,5 +156,5 @@ action="https://formspree.io/f/xaenneee"
             });
         });
     </script>
-</body>
-</html>
+    </body>
+    </html>
