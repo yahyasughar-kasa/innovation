@@ -1,0 +1,64 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+}
+
+model User {
+  id           String       @id @default(cuid())
+  name         String
+  email        String       @unique
+  passwordHash String
+  role         Role         @default(STUDENT)
+  createdAt    DateTime     @default(now())
+  classrooms   Classroom[]  @relation("TeacherClassrooms")
+  attendances  Attendance[]
+}
+
+model Classroom {
+  id          String    @id @default(cuid())
+  name        String
+  latitude    Float
+  longitude   Float
+  radiusM     Float     @default(20)
+  teacherId   String
+  teacher     User      @relation("TeacherClassrooms", fields: [teacherId], references: [id], onDelete: Cascade)
+  sessions    Session[]
+  createdAt   DateTime  @default(now())
+}
+
+model Session {
+  id          String       @id @default(cuid())
+  title       String
+  startsAt    DateTime
+  endsAt      DateTime
+  classroomId String
+  classroom   Classroom    @relation(fields: [classroomId], references: [id], onDelete: Cascade)
+  attendances Attendance[]
+  createdAt   DateTime     @default(now())
+}
+
+model Attendance {
+  id             String   @id @default(cuid())
+  studentId      String
+  sessionId      String
+  latitude       Float
+  longitude      Float
+  accuracyM      Float?
+  distanceM      Float
+  recordedAt     DateTime @default(now())
+  student        User     @relation(fields: [studentId], references: [id], onDelete: Cascade)
+  session        Session  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+
+  @@unique([studentId, sessionId])
+  @@index([sessionId])
+  @@index([studentId])
+}
